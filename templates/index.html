@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/picnic/6.5.2/picnic.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom-styles.css') }}">
+    <style>
+        body {
+            background-color: #eceff1;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .new-note-section {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .note-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .note-card {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .note-title {
+            margin: 0;
+            font-size: 1.1em;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #e57373;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="new-note-section">
+        <h2>Create a New Note</h2>
+        <form action="/add_note" method="POST">
+            <input type="text" name="note_name" placeholder="Enter your note" required class="input-full">
+            <button type="submit" class="button">Add</button>
+        </form>
+    </section>
+
+    <h3>Your Notes</h3>
+    <div class="note-list">
+        {% for note in notes %}
+        <div class="note-card">
+            <p class="note-title">{{ note.name }}</p>
+            <form action="/delete_note/{{ note._id }}" method="POST" style="margin: 0;">
+                <button type="submit" class="delete-btn">✖</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
